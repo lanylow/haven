@@ -1,10 +1,8 @@
 #include "include.hpp"
 
-int get_millisecs() {
-    return std::chrono::high_resolution_clock::now().time_since_epoch().count();
-}
-
 void handle_request(udp_stream* udp) {
+    if (host_player->valid) return redirect_request(udp);
+
     int ip = udp->get_message_ip(), port = udp->get_message_port();
 
     switch (udp->read_byte()) {
@@ -44,8 +42,7 @@ void handle_request(udp_stream* udp) {
                 udp->write_line(message);
                 udp->send(ip, port);
             } else {
-                host_player = new player();
-
+                host_player->valid = true;
                 host_player->ip = ip;
                 host_player->port = port;
                 host_player->last_tick = get_millisecs() + 30000;
@@ -79,7 +76,7 @@ void handle_request(udp_stream* udp) {
                 udp->write_byte(128);
                 udp->send(ip, port);
 
-                std::cout << "Host player joined from " << dotted_ip(ip) << ":" << port << std::endl;
+                std::cout << "Host player joined from " << dotted_ip(ip) << ":" << port << "." << std::endl;
             }
 
             break;
@@ -95,5 +92,46 @@ void redirect_request(udp_stream* udp) {
 
     if (ip == host_player->ip && port == host_player->port) {
         host_player->last_tick = get_millisecs() + 30000;
+        recv_bank->resize(udp->read_available());
+
+        if (recv_bank->get_size() != 0) {
+            recv_bank->read_bytes(udp, 0, recv_bank->get_size());
+
+            if (recv_bank->get_size() - 9 >= 0) {
+                if (recv_bank->peek_byte(0) == REQ_DISCONNECT && recv_bank->peek_byte(recv_bank->get_size() - 9) != 254) {
+                    std::cout << "Host player disconnected." << std::endl;
+                    host_player->valid = false;
+                    return;
+                }
+            }
+
+            if (recv_bank->get_size() - 8 >= 0) {
+                ip = recv_bank->peek_int(recv_bank->get_size() - 8);
+                port = recv_bank->peek_int(recv_bank->get_size() - 4);
+                recv_bank->resize(recv_bank->get_size() - 8);
+            } else {
+                ip = port = 0;
+            }
+
+            if (ip != 0 && port != 0) {
+                recv_bank->write_bytes(udp, 0, recv_bank->get_size());
+                udp->send(ip, port);
+            } else {
+                udp->write_int(host_player->ip);
+                udp->write_int(host_player->port);
+                recv_bank->write_bytes(udp, 0, recv_bank->get_size());
+                udp->send(host_player->ip, host_player->port);
+            }
+        }
+    } else {
+        recv_bank->resize(udp->read_available());
+
+        if (recv_bank->get_size() != 0) {
+            recv_bank->read_bytes(udp, 0, recv_bank->get_size());
+            udp->write_int(ip);
+            udp->write_int(port);
+            recv_bank->write_bytes(udp, 0, recv_bank->get_size());
+            udp->send(host_player->ip, host_player->port);
+        }
     }
 }

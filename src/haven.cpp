@@ -32,8 +32,20 @@ int main() {
 
     while (true) {
         while (udp->recieve()) {
-            if (host_player == nullptr) handle_request(udp);
-            else redirect_request(udp);
+            handle_request(udp);
+        }
+
+        if (host_player->valid) {
+            if (host_player->send_tick < get_millisecs()) {
+                udp->write_byte(-1);
+                udp->send(host_player->ip, host_player->port);
+                host_player->send_tick = get_millisecs() + 1000;
+            }
+
+            if (host_player->last_tick < get_millisecs()) {
+                std::cout << "Host player timed out." << std::endl;
+                host_player->valid = false;
+            }
         }
 
         sleep(10);
