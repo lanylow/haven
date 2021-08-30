@@ -1,14 +1,8 @@
 #include "include.hpp"
 
-static std::set<stream*> stream_set;
+stream::stream() { }
 
-stream::stream() {
-    stream_set.insert(this);
-}
-
-stream::~stream() {
-    stream_set.erase(this);
-}
+stream::~stream() { }
 
 int stream::read_available() {
     return this->available();

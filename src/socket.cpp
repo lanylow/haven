@@ -1,9 +1,5 @@
 #include "include.hpp"
 
-static int recieve_timeout = 0;
-
-static std::set<udp_stream*> udp_stream_set;
-
 udp_stream::udp_stream(unsigned int socket) : socket(socket), position(0), e(0) {
     socklen_t length = sizeof(address);
     getsockname(socket, (sockaddr*)&address, &length);
@@ -94,21 +90,11 @@ udp_stream* create_udp_stream(int port) {
         sockaddr_in address = { AF_INET, htons(port) };
         if (!bind(sock, (sockaddr*)&address, sizeof(address))) {
             udp_stream* stream = new udp_stream(sock);
-            udp_stream_set.insert(stream);
             return stream;
         }
         close(sock);
     }
     return 0;
-}
-
-void close_udp_stream(udp_stream* stream) {
-    udp_stream_set.erase(stream);
-    delete stream;
-}
-
-void set_udp_timeout(int timeout) {
-    recieve_timeout = timeout;
 }
 
 std::string dotted_ip(int ip) {

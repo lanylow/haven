@@ -26,6 +26,4 @@ private:
 
 void close_socket(unsigned int socket, int e);
 udp_stream* create_udp_stream(int port);
-void close_udp_stream(udp_stream* stream);
-void set_udp_timeout(int timeout);
 std::string dotted_ip(int ip);

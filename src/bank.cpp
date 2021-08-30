@@ -71,14 +71,11 @@ int bank::write_bytes(stream* s, int offset, int count) {
     return s->write(this->data + offset, count);
 }
 
-static std::set<bank*> bank_set;
-
 bank* create_bank(int size) {
     bank* b = new bank(size);
-    bank_set.insert(b);
     return b;
 }
 
 void free_bank(bank* b) {
-    if (bank_set.erase(b)) delete b;
+    delete b;
 }
