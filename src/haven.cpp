@@ -21,9 +21,9 @@ int main() {
   std::cout << "Created by lanylow." << std::endl << std::endl;
   std::cout << "\033[97m";
 
-  std::cout << "Creating UDP server on port 50021." << std::endl;
+  std::cout << "Creating UDP server on port " << server_config.port << "." << std::endl;
 
-  udp_stream* udp = create_udp_stream(50021);
+  udp_stream* udp = create_udp_stream(server_config.port);
 
   if (!udp) {
     std::cout << "\033[91mFailed to create UDP server, aborting.\033[97m" << std::endl;
