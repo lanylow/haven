@@ -36,16 +36,15 @@ int udp_stream::eof() {
 
 int udp_stream::recieve() {
   if (e) return 0;
-
-  static char buffer[512];
-  memset(buffer, 0, 512);
-  unsigned int length = sizeof(input_address);
-  int size = recvfrom(socket, buffer, sizeof(buffer), 0, (sockaddr*)&input_address, &length);
-  if (size == -1) return 0;
-  input_buffer.resize(size);
-  position = 0;
-  memcpy(input_buffer.data(), buffer, size);
-  return get_message_ip();
+  for (;;) {
+    input_buffer.resize(2048); position = 0;
+    unsigned int len = sizeof(input_address);
+    int n = recvfrom(socket, (char*)input_buffer.data(), 2048, 0, (sockaddr*)&input_address, &len);
+    if (n == -1) continue;
+    input_buffer.resize(n);
+    return get_message_ip();
+  }
+  return 0;
 }
 
 int udp_stream::send(int ip, int port) {
