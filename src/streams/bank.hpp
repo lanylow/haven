@@ -3,7 +3,6 @@
 class bank {
  public:
   bank(int sz);
-  virtual ~bank();
 
   void resize(int n);
   int get_size();
@@ -18,13 +17,9 @@ class bank {
   void poke_int(int offset, int value);
   void poke_float(int offset, float value);
 
-  int read_bytes(stream* s, int offset, int count);
-  int write_bytes(stream* s, int offset, int count);
+  int read_bytes(base_stream* s, int offset, int count);
+  int write_bytes(base_stream* s, int offset, int count);
 
  private:
-  char* data;
-  int size, capacity;
+  std::unique_ptr<std::vector<char>> data;
 };
-
-bank* create_bank(int size);
-void free_bank(bank* b);

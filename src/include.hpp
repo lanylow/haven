@@ -1,22 +1,34 @@
 #pragma once
 
-#include <string.h>
 #include <string>
+#include <cstring>
+#include <sstream>
+#include <array>
 #include <iostream>
 #include <vector>
+#include <memory>
 #include <chrono>
+#include <thread>
 
 #include <sys/socket.h>
-#include <sys/ioctl.h>
-#include <sys/time.h>
 #include <arpa/inet.h>
 #include <unistd.h>
-#include <stdlib.h>
-#include <stdio.h>
+
+#include "util/singleton.hpp"
+#include "util/logger.hpp"
+#include "util/common_util.hpp"
+
+#include "streams/base_stream.hpp"
+#include "streams/bank.hpp"
+
+#include "udp/udp_socket.hpp"
+#include "udp/udp_stream.hpp"
 
 #include "../config.hpp"
-#include "haven.hpp"
-#include "stream.hpp"
-#include "socket.hpp"
-#include "bank.hpp"
-#include "requests.hpp"
+
+#define MP_VER "1.0.4"
+#define CL_VER 2
+
+#include "server/base_request.hpp"
+#include "server/requests/requests.hpp"
+#include "server/haven.hpp"
