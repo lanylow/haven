@@ -42,7 +42,7 @@ void haven::redirect_request() {
     recv_bank->resize(stream.read_avail());
 
     if (recv_bank->get_size() != 0) {
-      recv_bank->read_bytes((base_stream*)&stream, 0, recv_bank->get_size());
+      recv_bank->read_bytes(stream, 0, recv_bank->get_size());
 
       if (recv_bank->get_size() - 9 >= 0) {
         if (recv_bank->peek_byte(0) == request_disconnect && recv_bank->peek_byte(recv_bank->get_size() - 9) != 254) {
@@ -61,12 +61,12 @@ void haven::redirect_request() {
       }
 
       if (ip != 0 && port != 0) {
-        recv_bank->write_bytes((base_stream*)&stream, 0, recv_bank->get_size());
+        recv_bank->write_bytes(stream, 0, recv_bank->get_size());
         stream.send(ip, port);
       } else {
         stream.write_int(host.ip);
         stream.write_int(host.port);
-        recv_bank->write_bytes((base_stream*)&stream, 0, recv_bank->get_size());
+        recv_bank->write_bytes(stream, 0, recv_bank->get_size());
         stream.send(host.ip, host.port);
       }
     }
@@ -74,10 +74,10 @@ void haven::redirect_request() {
     recv_bank->resize(stream.read_avail());
 
     if (recv_bank->get_size() != 0) {
-      recv_bank->read_bytes((base_stream*)&stream, 0, recv_bank->get_size());
+      recv_bank->read_bytes(stream, 0, recv_bank->get_size());
       stream.write_int(ip);
       stream.write_int(port);
-      recv_bank->write_bytes((base_stream*)&stream, 0, recv_bank->get_size());
+      recv_bank->write_bytes(stream, 0, recv_bank->get_size());
       stream.send(host.ip, host.port);
     }
   }

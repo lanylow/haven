@@ -34,10 +34,10 @@ def_poke(float, float, poke_float)
 
 #undef def_poke
 
-int bank::read_bytes(base_stream* s, int offset, int count) {
-  return s->read(this->data->data() + offset, count);
+int bank::read_bytes(base_stream& s, int offset, int count) {
+  return s.read(this->data->data() + offset, count);
 }
 
-int bank::write_bytes(base_stream* s, int offset, int count) {
-  return s->write(this->data->data() + offset, count);
+int bank::write_bytes(base_stream& s, int offset, int count) {
+  return s.write(this->data->data() + offset, count);
 }

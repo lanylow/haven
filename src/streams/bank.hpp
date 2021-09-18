@@ -17,8 +17,8 @@ class bank {
   void poke_int(int offset, int value);
   void poke_float(int offset, float value);
 
-  int read_bytes(base_stream* s, int offset, int count);
-  int write_bytes(base_stream* s, int offset, int count);
+  int read_bytes(base_stream& s, int offset, int count);
+  int write_bytes(base_stream& s, int offset, int count);
 
  private:
   std::unique_ptr<std::vector<char>> data;
