@@ -14,15 +14,16 @@ class haven {
     request_connecterror = 113
   };
 
-  struct {
-    int ip, port, last_tick, send_tick;
-    bool valid = false;
-  } host_player;
-
  private:
   udp_stream& stream;
-  std::vector<std::pair<int, std::shared_ptr<base_request>>> requests = {
-    { request_connect, std::shared_ptr<base_request>(new connect_request()) },
-    { request_serverlist, std::shared_ptr<base_request>(new server_list_request()) }
+  std::map<int, std::function<void(udp_stream&)>> requests = {
+    { request_connect, requests::connect_request },
+    { request_serverlist, requests::server_list_request }
   };
+};
+
+class host_player : public singleton<host_player> {
+ public:
+  int ip, port, last_tick, send_tick;
+  bool valid = false;
 };

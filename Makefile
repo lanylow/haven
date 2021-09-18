@@ -10,10 +10,10 @@ clean:
 	rm -rf ./build
 
 haven: $(OBJ)
-	g++ $(LDFLAGS) -std=c++20 -s -O3 -o $(PATH_BUILD)/$@ $(OBJ)
+	g++ $(LDFLAGS) -std=c++17 -s -O3 -o $(PATH_BUILD)/$@ $(OBJ)
 
 $(PATH_BUILD)/%.o: $(PATH_SRC)/%.cpp | $(PATH_BUILD)
-	g++ $(CFLAGS) -std=c++20 -c -o $@ $<
+	g++ $(CFLAGS) -std=c++17 -c -o $@ $<
 
 $(PATH_BUILD):
 	mkdir -p $(patsubst $(PATH_SRC)%, $(PATH_BUILD)%, $(shell find $(PATH_SRC) -type d))

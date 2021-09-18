@@ -1,6 +1,6 @@
 #include "../../include.hpp"
 
-void server_list_request::invoke(udp_stream& stream, void* base_class) {
+void requests::server_list_request(udp_stream& stream) {
   int ip = stream.get_message_ip(), port = stream.get_message_port();
 
   stream.write_line(server_config.name);

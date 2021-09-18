@@ -2,25 +2,29 @@
 
 void haven::run() {
   for (;;) {
+    host_player& host = host_player::get();
+
     while (stream.recieve()) {
-      if (!host_player.valid) {
+      if (!host.valid) {
         int code = stream.read_byte();
-        for (auto& req : requests) if (req.first == code) req.second->invoke(stream, this);
+        if (requests.count(code)) {
+          requests[code](stream);
+        }
       } else {
         redirect_request();
       }
     }
 
-    if (host_player.valid) {
-      if (host_player.send_tick < util::get_millisecs()) {
+    if (host.valid) {
+      if (host.send_tick < util::get_millisecs()) {
         stream.write_byte(-1);
-        stream.send(host_player.ip, host_player.port);
-        host_player.send_tick = util::get_millisecs() + 1000;
+        stream.send(host.ip, host.port);
+        host.send_tick = util::get_millisecs() + 1000;
       }
 
-      if (host_player.last_tick < util::get_millisecs()) {
+      if (host.last_tick < util::get_millisecs()) {
         logger::get().log("Host player timed out.", logger::log_type_info);
-        host_player.valid = false;
+        host.valid = false;
       }
     }
     
@@ -31,9 +35,10 @@ void haven::run() {
 void haven::redirect_request() {
   std::unique_ptr<bank> recv_bank = std::make_unique<bank>(8192);
   int ip = stream.get_message_ip(), port = stream.get_message_port();
+  host_player& host = host_player::get();
 
-  if (ip == host_player.ip && port == host_player.port) {
-    host_player.last_tick = util::get_millisecs() + 30000;
+  if (ip == host.ip && port == host.port) {
+    host.last_tick = util::get_millisecs() + 30000;
     recv_bank->resize(stream.read_avail());
 
     if (recv_bank->get_size() != 0) {
@@ -42,7 +47,7 @@ void haven::redirect_request() {
       if (recv_bank->get_size() - 9 >= 0) {
         if (recv_bank->peek_byte(0) == request_disconnect && recv_bank->peek_byte(recv_bank->get_size() - 9) != 254) {
           logger::get().log("Host player disconnected.", logger::log_type_info);
-          host_player.valid = false;
+          host.valid = false;
           return;
         }
       }
@@ -59,10 +64,10 @@ void haven::redirect_request() {
         recv_bank->write_bytes((base_stream*)&stream, 0, recv_bank->get_size());
         stream.send(ip, port);
       } else {
-        stream.write_int(host_player.ip);
-        stream.write_int(host_player.port);
+        stream.write_int(host.ip);
+        stream.write_int(host.port);
         recv_bank->write_bytes((base_stream*)&stream, 0, recv_bank->get_size());
-        stream.send(host_player.ip, host_player.port);
+        stream.send(host.ip, host.port);
       }
     }
   } else {
@@ -73,7 +78,7 @@ void haven::redirect_request() {
       stream.write_int(ip);
       stream.write_int(port);
       recv_bank->write_bytes((base_stream*)&stream, 0, recv_bank->get_size());
-      stream.send(host_player.ip, host_player.port);
+      stream.send(host.ip, host.port);
     }
   }
 }

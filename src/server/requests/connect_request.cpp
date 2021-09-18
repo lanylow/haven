@@ -1,8 +1,7 @@
 #include "../../include.hpp"
 
-void connect_request::invoke(udp_stream& stream, void* base_class) {
+void requests::connect_request(udp_stream& stream) {
   int ip = stream.get_message_ip(), port = stream.get_message_port();
-  haven* base = (haven*)base_class;
 
   stream.read_byte();
   std::string name = stream.read_line();
@@ -21,10 +20,12 @@ void connect_request::invoke(udp_stream& stream, void* base_class) {
     stream.write_line(message);
     stream.send(ip, port);
   } else {
-    base->host_player.valid = true;
-    base->host_player.ip = ip;
-    base->host_player.port = port;
-    base->host_player.last_tick = util::get_millisecs() + 30000;
+    host_player& host = host_player::get();
+    
+    host.valid = true;
+    host.ip = ip;
+    host.port = port;
+    host.last_tick = util::get_millisecs() + 30000;
 
     stream.read_short();
     stream.read_short();

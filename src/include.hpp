@@ -9,6 +9,8 @@
 #include <memory>
 #include <chrono>
 #include <thread>
+#include <map>
+#include <functional>
 
 #include <sys/socket.h>
 #include <arpa/inet.h>
@@ -29,6 +31,5 @@
 #define MP_VER "1.0.4"
 #define CL_VER 2
 
-#include "server/base_request.hpp"
 #include "server/requests/requests.hpp"
 #include "server/haven.hpp"
