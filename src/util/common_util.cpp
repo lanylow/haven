@@ -26,7 +26,3 @@ std::string util::dotted_ip(int ip) {
             << ((ip) & 255);
   return ip_stream.str();
 }
-
-int util::get_millisecs() {
-  return std::chrono::high_resolution_clock::now().time_since_epoch().count();
-}

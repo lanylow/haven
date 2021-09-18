@@ -24,6 +24,7 @@ class haven {
 
 class host_player : public singleton<host_player> {
  public:
-  int ip, port, last_tick, send_tick;
+  int ip, port;
+  long long last_tick, send_tick;
   bool valid = false;
 };

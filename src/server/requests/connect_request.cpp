@@ -21,11 +21,11 @@ void requests::connect_request(udp_stream& stream) {
     stream.send(ip, port);
   } else {
     host_player& host = host_player::get();
-    
+
     host.valid = true;
     host.ip = ip;
     host.port = port;
-    host.last_tick = util::get_millisecs() + 30000;
+    host.last_tick = internal_clock::get_current_time() + 20000;
 
     stream.read_short();
     stream.read_short();

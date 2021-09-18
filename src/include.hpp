@@ -16,6 +16,7 @@
 #include <arpa/inet.h>
 #include <unistd.h>
 
+#include "util/clock.hpp"
 #include "util/singleton.hpp"
 #include "util/logger.hpp"
 #include "util/common_util.hpp"

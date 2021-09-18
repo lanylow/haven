@@ -13,21 +13,21 @@ void haven::run() {
       } else {
         redirect_request();
       }
+
+      if (host.valid) {
+        if (host.send_tick < internal_clock::get_current_time()) {
+          stream.write_byte(-1);
+          stream.send(host.ip, host.port);
+          host.send_tick = internal_clock::get_current_time() + 1000;
+        }
+
+        if (host.last_tick < internal_clock::get_current_time()) {
+          logger::get().log("Host player timed out.", logger::log_type_info);
+          host.valid = false;
+        }
+      }
     }
 
-    if (host.valid) {
-      if (host.send_tick < util::get_millisecs()) {
-        stream.write_byte(-1);
-        stream.send(host.ip, host.port);
-        host.send_tick = util::get_millisecs() + 1000;
-      }
-
-      if (host.last_tick < util::get_millisecs()) {
-        logger::get().log("Host player timed out.", logger::log_type_info);
-        host.valid = false;
-      }
-    }
-    
     sleep(10);
   }
 }
@@ -38,7 +38,7 @@ void haven::redirect_request() {
   host_player& host = host_player::get();
 
   if (ip == host.ip && port == host.port) {
-    host.last_tick = util::get_millisecs() + 30000;
+    host.last_tick = internal_clock::get_current_time() + 20000;
     recv_bank->resize(stream.read_avail());
 
     if (recv_bank->get_size() != 0) {
