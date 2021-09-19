@@ -3,7 +3,7 @@
 udp_socket::udp_socket(int port) {
   sock = socket(AF_INET, SOCK_DGRAM, 0);
   if (sock != -1) {
-    sockaddr_in address = { AF_INET, htons(port) };
+    sockaddr_in address = { AF_INET, htons(port), 0, 0 };
     if (!bind(sock, (sockaddr*)&address, sizeof(address))) {
       socklen_t len = sizeof(addr);
       getsockname(sock, (sockaddr*)&addr, &len);

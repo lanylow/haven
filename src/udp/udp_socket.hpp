@@ -14,6 +14,6 @@ class udp_socket {
   int send(int ip, int port, std::vector<char>& buffer);
 
  private:
-  unsigned int sock;
+  int sock;
   sockaddr_in addr, in_addr, out_addr;
 };
