@@ -5,7 +5,7 @@ Unofficial SCP: Containment Breach Multiplayer Mod server for linux. This is a "
 
 ### Prerequisites
 
--   CMake 3.11.0+
+-   CMake 3.10.0+
 -   g++ 10
 
 Below are example commands for some distributions to install the required packages:
