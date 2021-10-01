@@ -3,9 +3,9 @@
 class logger : public singleton<logger> {
  private:
   std::array<std::string, 3> prefixes {
-    "\033[92m[info] \033[97m",
-    "\033[93m[warn] \033[97m",
-    "\033[91m[err] \033[97m"
+    "\033[92m[info] \033[0m",
+    "\033[93m[warn] \033[0m",
+    "\033[91m[err] \033[0m"
   };
 
  public:
