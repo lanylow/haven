@@ -29,7 +29,7 @@
 
 #include "../config.hpp"
 
-#define MP_VER "1.0.5"
+#define MP_VER "1.0.5.1"
 #define CL_VER 2
 
 #include "server/requests/requests.hpp"
