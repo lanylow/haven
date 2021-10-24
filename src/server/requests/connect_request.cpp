@@ -32,7 +32,7 @@ void requests::connect_request(udp_stream& stream) {
 
     stream.write_byte(haven::request_connect);
     stream.write_byte(1);
-    stream.write_line(server_config.map_seed);
+    stream.write_line(host.seed);
     stream.write_byte(server_config.intro_enabled);
     stream.write_byte(server_config.no_cheat);
     stream.write_byte(server_config.voice);

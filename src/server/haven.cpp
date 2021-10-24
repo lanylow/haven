@@ -1,9 +1,9 @@
 #include "../include.hpp"
 
 void haven::run() {
+	host_player& host = host_player::get();
+	host.invalidate();
   for (;;) {
-    host_player& host = host_player::get();
-
     while (stream.recieve()) {
       if (!host.valid) {
         int code = stream.read_byte();
@@ -23,7 +23,7 @@ void haven::run() {
 
         if (host.last_tick < internal_clock::get_current_time()) {
           logger::get().log("Host player timed out.", logger::log_type_info);
-          host.valid = false;
+          host.invalidate();
         }
       }
     }
@@ -47,7 +47,7 @@ void haven::redirect_request() {
       if (recv_bank->get_size() - 9 >= 0) {
         if (recv_bank->peek_byte(0) == request_disconnect && recv_bank->peek_byte(recv_bank->get_size() - 9) != 254) {
           logger::get().log("Host player disconnected.", logger::log_type_info);
-          host.valid = false;
+          host.invalidate();
           return;
         }
       }

@@ -26,3 +26,14 @@ std::string util::dotted_ip(int ip) {
             << ((ip) & 255);
   return ip_stream.str();
 }
+
+std::string util::random_string(int len) {
+	static auto& chars = "0123456789abcdefghijklmnopqrstuwxyzABCDEFGHIJKLMNOPQRSTUWXYZ";
+	static std::mt19937 random{ std::random_device{ }() };
+	static std::uniform_int_distribution<std::string::size_type> pick(0, sizeof(chars) - 2);
+ 	std::string temp;
+	temp.reserve(len);
+	while (len--)
+		temp += chars[pick(random)];
+	return temp;
+}

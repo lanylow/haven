@@ -10,7 +10,7 @@ void requests::server_list_request(udp_stream& stream) {
   stream.write_line(strlen(server_config.password) <= 1 ? "" : "PS");
   stream.write_byte(0);
   stream.write_byte(server_config.voice);
-  stream.write_line(server_config.map_seed);
+  stream.write_line(host_player::get().seed);
   stream.write_line(server_config.description);
   stream.write_line(server_config.game_state);
   stream.write_line(MP_VER);

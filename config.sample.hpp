@@ -18,5 +18,6 @@ struct {
   const char* name = "SCP Server";
   const char* description = "SCP Server running on haven.";
   const char* web_url = "https://github.com/lanylow/haven";
+	bool random_seed = false;
   const char* map_seed = "haven";
 } server_config;

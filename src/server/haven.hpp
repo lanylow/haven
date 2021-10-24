@@ -27,4 +27,13 @@ class host_player : public singleton<host_player> {
   int ip, port;
   long long last_tick, send_tick;
   bool valid = false;
+	const char* seed;
+
+	void invalidate() {
+		valid = false;
+		if (server_config.random_seed)
+			seed = util::random_string(6).c_str();
+		else 
+			seed = server_config.map_seed;
+	}
 };
