@@ -54,8 +54,8 @@ void requests::connect_request(udp_stream& stream) {
     stream.write_int(server_config.voice_quality);
     stream.write_line("");
     stream.write_byte(128);
-		stream.write_byte(server_config.long_culling_rooms);
-		stream.write_byte(server_config.map_size);
+    stream.write_byte(server_config.long_culling_rooms);
+    stream.write_byte(server_config.map_size);
     stream.send(ip, port);
 
     logger::get().log("Host player joined from " + util::dotted_ip(ip) + ":" + std::to_string(port) + ".", logger::log_type_info);

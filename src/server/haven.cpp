@@ -1,8 +1,8 @@
 #include "../include.hpp"
 
 void haven::run() {
-	host_player& host = host_player::get();
-	host.invalidate();
+  host_player& host = host_player::get();
+  host.invalidate();
   for (;;) {
     while (stream.recieve()) {
       if (!host.valid) {
