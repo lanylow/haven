@@ -13,11 +13,13 @@ struct {
   int tickrate = 128;
   int keep_inventory = 0;
   int voice_quality = 22050;
+  int long_culling_rooms = 0;
+  int map_size = 4;
+  int random_seed = 0;
   const char* password = "";
   const char* game_state = "In lobby";
   const char* name = "SCP Server";
   const char* description = "SCP Server running on haven.";
   const char* web_url = "https://github.com/lanylow/haven";
-	bool random_seed = false;
   const char* map_seed = "haven";
 } server_config;
