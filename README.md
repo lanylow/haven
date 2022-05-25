@@ -1,5 +1,6 @@
 # haven [![License](https://img.shields.io/badge/License-GPL3.0-green.svg)](https://github.com/lanylow/haven/blob/main/LICENSE.md) ![OS](https://img.shields.io/badge/OS-Linux-green.svg) [![Chat](https://img.shields.io/badge/Chat-Discord-blue.svg)](https://discord.com/invite/zSDXQTc)  
-WARNING! This is currently not working, please wait for a fix.
+This project got archived because the game does not support lite servers anymore.
+
 Unofficial SCP: Containment Breach Multiplayer Mod server for linux. This is a "lite" server, which works by redirecting requests to the host player.
 
 ## Getting started
